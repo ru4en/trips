@@ -7,6 +7,8 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
     
     <script>
         tailwind.config = {
@@ -60,6 +62,10 @@
         }
         input[type="checkbox"]:hover { transform: scale(1.1); }
         .checked-text { text-decoration: line-through; opacity: 0.4; transition: all 0.3s ease; }
+        
+        .dark-tiles {
+            filter: brightness(0.6) invert(1) contrast(3) hue-rotate(200deg) saturate(0.3) brightness(0.7);
+        }
     </style>
 </head>
 <body class="antialiased selection:bg-porto-blue selection:text-white">
@@ -94,8 +100,19 @@
                     </div>
                     
                     <ul class="text-xs text-gray-300 space-y-1">
-                        <li><i class="fa-solid fa-ticket text-porto-blue mr-2"></i><strong>Flight:</strong> Ryanair FR1175</li>
+                        <li class="flex items-center gap-2">
+                            <i class="fa-solid fa-ticket text-porto-blue"></i>
+                            <strong>Flight:</strong> 
+                            <span id="outbound-flight" class="cursor-pointer text-porto-blue hover:text-white transition-colors bg-slate-800/50 px-2 py-0.5 rounded flex items-center gap-1 w-fit" onclick="copyFlight('FR1175', 'outbound-flight')">
+                                FR1175 <i class="fa-regular fa-copy"></i>
+                            </span>
+                        </li>
                         <li><i class="fa-solid fa-suitcase text-porto-blue mr-2"></i><strong>Baggage:</strong> 1 small bag (40 x 30 x 20cm)</li>
+                        <li class="pt-2">
+                            <a href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=Outbound+Flight+to+Porto+(MAN-OPO)&dates=20260905T051500Z/20260905T074500Z&details=Flight+FR1175" target="_blank" class="inline-flex items-center gap-2 text-xs bg-slate-800 hover:bg-porto-blue text-white px-3 py-1.5 rounded transition-colors border border-slate-700">
+                                <i class="fa-regular fa-calendar-plus"></i> Add to Calendar
+                            </a>
+                        </li>
                     </ul>
                 </div>
 
@@ -119,8 +136,19 @@
                     </div>
                     
                     <ul class="text-xs text-gray-300 space-y-1">
-                        <li><i class="fa-solid fa-ticket text-porto-wine mr-2"></i><strong>Flight:</strong> EasyJet EZY2218</li>
+                        <li class="flex items-center gap-2">
+                            <i class="fa-solid fa-ticket text-porto-wine"></i>
+                            <strong>Flight:</strong> 
+                            <span id="return-flight" class="cursor-pointer text-porto-wine hover:text-white transition-colors bg-slate-800/50 px-2 py-0.5 rounded flex items-center gap-1 w-fit" onclick="copyFlight('EZY2218', 'return-flight')">
+                                EZY2218 <i class="fa-regular fa-copy"></i>
+                            </span>
+                        </li>
                         <li><i class="fa-solid fa-suitcase text-porto-wine mr-2"></i><strong>Baggage:</strong> 1 small bag (45 x 36 x 20cm)</li>
+                        <li class="pt-2">
+                            <a href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=Return+Flight+to+Manchester+(OPO-MAN)&dates=20260909T205000Z/20260909T231500Z&details=Flight+EZY2218" target="_blank" class="inline-flex items-center gap-2 text-xs bg-slate-800 hover:bg-porto-wine text-white px-3 py-1.5 rounded transition-colors border border-slate-700">
+                                <i class="fa-regular fa-calendar-plus"></i> Add to Calendar
+                            </a>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -143,16 +171,19 @@
             <div class="space-y-6">
                 <div class="glass-panel p-5 rounded-2xl reveal border-t-4 border-t-porto-terra relative overflow-hidden">
                     <h3 class="font-serif text-xl mb-3 text-white"><i class="fa-solid fa-house text-porto-terra mr-2"></i>Accommodation</h3>
-                    
                     <a href="https://www.google.com/maps/search/?api=1&query=Rua+Fonte+da+Rija+239,+Vila+Nova+de+Gaia,+Porto" target="_blank" class="flex items-start gap-3 text-xs sm:text-sm text-slate-300 hover:text-white transition-colors bg-slate-800/80 border border-slate-700 p-3 rounded-xl w-full mb-3">
                         <i class="fa-solid fa-map-location-dot mt-1 text-porto-terra text-base"></i>
                         <span>Rua Fonte da Rija 239,<br>Vila Nova de Gaia, Porto 4430-384</span>
                     </a>
-
                     <div class="flex justify-between text-xs font-bold uppercase tracking-wide bg-slate-900 border border-slate-800 p-3 rounded-xl shadow-inner">
                         <div><span class="text-porto-blue block mb-1"><i class="fa-solid fa-arrow-right-to-bracket mr-1"></i> Check-in</span>Sat 16:00</div>
                         <div class="text-right"><span class="text-porto-terra block mb-1"><i class="fa-solid fa-arrow-right-from-bracket mr-1"></i> Checkout</span>Wed 10:00</div>
                     </div>
+                </div>
+
+                <div class="glass-panel p-5 rounded-2xl reveal shadow-lg">
+                    <h3 class="font-serif text-xl mb-4 text-white"><i class="fa-solid fa-map text-porto-blue mr-2"></i>Locations Map</h3>
+                    <div id="leaflet-map" class="h-64 w-full rounded-xl border border-slate-700/50 z-0 relative"></div>
                 </div>
 
                 <div class="glass-panel p-5 rounded-2xl reveal">
@@ -179,7 +210,7 @@
                         
                         <div class="bg-slate-800/80 p-3.5 rounded-xl border border-slate-700/50">
                             <h4 class="text-porto-wine font-bold text-xs tracking-widest uppercase mb-2 flex items-center gap-2">
-                                <i class="fa-solid fa-cross"></i> Ruben Track (Catholic Visits)
+                                <i class="fa-solid fa-cross"></i> Ruben Track
                             </h4>
                             <div id="list-catholic" class="space-y-1"></div>
                         </div>
@@ -203,7 +234,7 @@
                     id: "day1",
                     date: "5 September 2026 (Saturday)",
                     title: "Arrival & City Centre",
-                    image: "https://images.unsplash.com/photo-1555881400-74d7acaacd8b?q=80&w=1000",
+                    image: "https://www.city-guide-porto.com/_bibli/articlesPage/46/images/week-end-4-jours-porto.jpg",
                     events: [
                         { time: "09:00", track: "group", desc: "Arrival at OPO. Secure train station lockers for baggage.", loc: "São Bento Station, Porto" },
                         { time: "11:00", track: "split", 
@@ -220,7 +251,7 @@
                     id: "day2",
                     date: "6 September 2026 (Sunday)",
                     title: "Cathedrals & Bar Crawl",
-                    image: "https://images.unsplash.com/photo-1513836279014-a89f7a76ae86?q=80&w=1000",
+                    image: "https://www.ulysses.travel/wp-content/uploads/2019/12/Cloi%CC%82tre-de-la-Cathe%CC%81drale-de-Porto-1920x1441.jpg",
                     events: [
                         { time: "10:00", track: "split", 
                           desc_ruben: "Attend morning mass (Porto Cathedral, 11:00) & visit Order of St. Francis Museum.", loc_ruben: ["Porto Cathedral", "Church of Saint Francis, Porto"],
@@ -232,8 +263,8 @@
                 {
                     id: "day3",
                     date: "7 September 2026 (Monday)",
-                    title: "Beach & Port Wine Experience",
-                    image: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=1000",
+                    title: "Coastal Recovery and Wineries",
+                    image: "https://www.madaboutporto.com/assets/img/973x615_praia_de_miramar.jpg",
                     events: [
                         { time: "10:00", track: "group", desc: "Beach recovery at Praia de Miramar. Visit Capela do Senhor da Pedra.", loc: ["Praia de Miramar, Vila Nova de Gaia", "Capela do Senhor da Pedra"] },
                         { time: "17:15", track: "group", desc: "Port Winery Tour at Caves Ferreira.", loc: "Caves Ferreira, Vila Nova de Gaia" },
@@ -244,7 +275,7 @@
                     id: "day4",
                     date: "8 September 2026 (Tuesday)",
                     title: "Museums & Markets",
-                    image: "https://images.unsplash.com/photo-1548625361-185e347475f4?q=80&w=1000",
+                    image: "https://portoalities.com/wp-content/uploads/2023/10/best-things-to-do-bolhao-market.jpg",
                     events: [
                         { time: "10:00", track: "group", desc: "Visit Museu da Cidade do Porto.", loc: "Museu da Cidade do Porto" },
                         { time: "12:30", track: "group", desc: "Gastronomy and lunch at Mercado do Bolhão.", loc: "Mercado do Bolhão" },
@@ -255,7 +286,7 @@
                     id: "day5",
                     date: "9 September 2026 (Wednesday)",
                     title: "Final Sweeps & Departure",
-                    image: "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?q=80&w=1000",
+                    image: "https://www.danflyingsolo.com/wp-content/uploads/2018/04/ManchesterCityBreak3.jpg",
                     events: [
                         { time: "10:00", track: "group", desc: "Checkout from the Villa.", loc: "Rua Fonte da Rija 239" },
                         { time: "11:00", track: "group", desc: "Final sweeps, visit Casa Coração de Jesus catholic shop, souvenir buying.", loc: ["Casa Coração de Jesus, Porto", "Ribeira Square, Porto"] },
@@ -274,7 +305,7 @@
         let appState = {};
 
         function initializeState() {
-            const saved = localStorage.getItem('porto_lads_state_v5');
+            const saved = localStorage.getItem('porto_lads_state_v6');
             if (saved) {
                 appState = JSON.parse(saved);
             } else {
@@ -295,7 +326,7 @@
 
         function saveState() {
             appState.notes = document.getElementById('user-notes').innerHTML;
-            localStorage.setItem('porto_lads_state_v5', JSON.stringify(appState));
+            localStorage.setItem('porto_lads_state_v6', JSON.stringify(appState));
             const btn = document.getElementById('save-btn');
             if(btn) {
                 btn.innerHTML = '<i class="fa-solid fa-check"></i> Saved';
@@ -311,10 +342,41 @@
 
         function resetState() {
             if(confirm("Reset all saved notes and checklists to default?")) {
-                localStorage.removeItem('porto_lads_state_v5');
+                localStorage.removeItem('porto_lads_state_v6');
                 initializeState();
                 renderAll();
             }
+        }
+
+        function copyFlight(text, id) {
+            navigator.clipboard.writeText(text);
+            const el = document.getElementById(id);
+            const orig = el.innerHTML;
+            el.innerHTML = text + ' <i class="fa-solid fa-check text-green-400"></i>';
+            setTimeout(() => { el.innerHTML = orig; }, 2000);
+        }
+
+        function makeCalLink(dateStr, timeStr, title, loc) {
+            const dateMatch = dateStr.match(/(\d+) ([A-Za-z]+) (\d+)/);
+            if(!dateMatch) return '#';
+            const day = dateMatch[1].padStart(2, '0');
+            const monthNames = {January:'01',February:'02',March:'03',April:'04',May:'05',June:'06',July:'07',August:'08',September:'09',October:'10',November:'11',December:'12'};
+            const month = monthNames[dateMatch[2]];
+            const year = dateMatch[3];
+
+            let startHour = "09", startMin = "00";
+            if (timeStr && timeStr.includes(':')) {
+                const timeParts = timeStr.split(':');
+                startHour = timeParts[0];
+                startMin = timeParts[1];
+            }
+
+            const start = `${year}${month}${day}T${startHour}${startMin}00`;
+            const endHour = (parseInt(startHour) + 2).toString().padStart(2, '0');
+            const end = `${year}${month}${day}T${endHour}${startMin}00`;
+
+            const locationStr = Array.isArray(loc) ? loc.join(', ') : (loc || '');
+            return `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(title)}&dates=${start}/${end}&location=${encodeURIComponent(locationStr)}`;
         }
 
         function generateMapBtn(query) {
@@ -351,7 +413,10 @@
                         if (ev.desc_group) {
                             splitHtml += `
                                 <div class="bg-slate-800/80 p-3 rounded-xl border border-slate-700/50 mb-2">
-                                    <span class="badge badge-group mb-1"><i class="fa-solid fa-users mr-1"></i> Group / Others</span>
+                                    <div class="flex justify-between items-start">
+                                        <span class="badge badge-group mb-1"><i class="fa-solid fa-users mr-1"></i> Group / Others</span>
+                                        <a href="${makeCalLink(day.date, ev.time, ev.desc_group, ev.loc_group)}" target="_blank" class="text-slate-400 hover:text-porto-blue transition-colors" title="Add to Calendar"><i class="fa-solid fa-calendar-plus"></i></a>
+                                    </div>
                                     <p class="text-xs sm:text-sm text-slate-300 font-medium">${ev.desc_group}</p>
                                     ${generateMapBtn(ev.loc_group)}
                                 </div>
@@ -361,7 +426,10 @@
                         if (ev.desc_thomas) {
                             splitHtml += `
                                 <div class="bg-amber-950/30 p-3 rounded-xl border border-amber-900/40 mb-2">
-                                    <span class="badge badge-thomas mb-1"><i class="fa-solid fa-futbol mr-1"></i> Thomas</span>
+                                    <div class="flex justify-between items-start">
+                                        <span class="badge badge-thomas mb-1"><i class="fa-solid fa-futbol mr-1"></i> Thomas</span>
+                                        <a href="${makeCalLink(day.date, ev.time, ev.desc_thomas, ev.loc_thomas)}" target="_blank" class="text-slate-400 hover:text-porto-blue transition-colors" title="Add to Calendar"><i class="fa-solid fa-calendar-plus"></i></a>
+                                    </div>
                                     <p class="text-xs sm:text-sm text-slate-300 font-medium">${ev.desc_thomas}</p>
                                     ${generateMapBtn(ev.loc_thomas)}
                                 </div>
@@ -371,7 +439,10 @@
                         if (ev.desc_ruben) {
                             splitHtml += `
                                 <div class="bg-rose-950/30 p-3 rounded-xl border border-rose-900/40 mb-2">
-                                    <span class="badge badge-ruben mb-1"><i class="fa-solid fa-cross mr-1"></i> Ruben</span>
+                                    <div class="flex justify-between items-start">
+                                        <span class="badge badge-ruben mb-1"><i class="fa-solid fa-cross mr-1"></i> Ruben</span>
+                                        <a href="${makeCalLink(day.date, ev.time, ev.desc_ruben, ev.loc_ruben)}" target="_blank" class="text-slate-400 hover:text-porto-blue transition-colors" title="Add to Calendar"><i class="fa-solid fa-calendar-plus"></i></a>
+                                    </div>
                                     <p class="text-xs sm:text-sm text-slate-300 font-medium">${ev.desc_ruben}</p>
                                     ${generateMapBtn(ev.loc_ruben)}
                                 </div>
@@ -391,7 +462,10 @@
                         eventsHtml += `
                             <div class="flex flex-col sm:flex-row gap-2 sm:gap-4 border-l-2 border-porto-blue/30 pl-3 py-2 relative">
                                 <div class="absolute -left-[9px] top-3 w-4 h-4 rounded-full bg-porto-blue border-4 border-[#0B1121]"></div>
-                                <div class="w-16 flex-shrink-0 text-porto-blue font-bold font-mono text-sm sm:text-base">${ev.time}</div>
+                                <div class="w-16 flex-shrink-0 flex flex-col items-start gap-2">
+                                    <span class="text-porto-blue font-bold font-mono text-sm sm:text-base">${ev.time}</span>
+                                    <a href="${makeCalLink(day.date, ev.time, ev.desc, ev.loc)}" target="_blank" class="text-slate-400 hover:text-porto-blue transition-colors text-xs" title="Add to Calendar"><i class="fa-solid fa-calendar-plus"></i> Add</a>
+                                </div>
                                 <div class="flex-grow bg-slate-800/80 p-3 rounded-xl border border-slate-700/50 flex flex-col md:flex-row justify-between items-start md:items-center">
                                     <div>
                                         <p class="text-xs sm:text-sm text-slate-300 font-medium">${ev.desc}</p>
@@ -494,6 +568,33 @@
         function saveNotes() {
             saveState();
         }
+        
+        function initMap() {
+            const map = L.map('leaflet-map').setView([41.1496, -8.6110], 12);
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; OpenStreetMap contributors',
+                className: 'dark-tiles'
+            }).addTo(map);
+
+            const locations = [
+                { lat: 41.1186, lng: -8.5935, title: "The Villa (Base)" },
+                { lat: 41.2421, lng: -8.6786, title: "Francisco Sá Carneiro Airport" },
+                { lat: 41.1617, lng: -8.5836, title: "Estádio do Dragão" },
+                { lat: 41.1488, lng: -8.6074, title: "Mercado do Bolhão" },
+                { lat: 41.1424, lng: -8.6083, title: "Igreja de Santa Clara" },
+                { lat: 41.1427, lng: -8.6111, title: "Porto Cathedral" },
+                { lat: 41.0664, lng: -8.6570, title: "Praia de Miramar" },
+                { lat: 41.1370, lng: -8.6160, title: "Caves Ferreira" },
+                { lat: 41.1624, lng: -8.5986, title: "Casa Museu Fernando de Castro" },
+                { lat: 41.1408, lng: -8.6158, title: "Church of Saint Francis" }
+            ];
+
+            locations.forEach(loc => {
+                L.marker([loc.lat, loc.lng]).bindPopup(`<strong style="color: black;">${loc.title}</strong>`).addTo(map);
+            });
+            
+            setTimeout(() => { map.invalidateSize(); }, 500);
+        }
 
         function renderAll() {
             renderItinerary();
@@ -512,6 +613,7 @@
         document.addEventListener('DOMContentLoaded', () => {
             initializeState();
             renderAll();
+            initMap();
 
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
