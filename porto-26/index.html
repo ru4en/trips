@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Porto & Gaia 2026</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                        serif: ['"Playfair Display"', 'serif'],
+                    },
+                    colors: {
+                        porto: {
+                            blue: '#3B82F6',
+                            lightblue: '#1E3A8A',
+                            terra: '#F59E0B',
+                            sand: '#0B1121',
+                            dark: '#F8FAFC',
+                            wine: '#E11D48'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { background-color: #0B1121; color: #F1F5F9; overflow-x: hidden; }
+        .glass-panel { background: rgba(30, 41, 59, 0.6); backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.05); box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5); }
+        .text-shadow { text-shadow: 0 4px 12px rgba(0,0,0,0.8); }
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #0B1121; }
+        ::-webkit-scrollbar-thumb { background: #1E293B; border-radius: 4px; border: 1px solid #334155; }
+        ::-webkit-scrollbar-thumb:hover { background: #3B82F6; }
+        .reveal { opacity: 0; transform: translateY(30px); transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1); }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+        
+        .badge { display: inline-flex; align-items: center; padding: 0.25rem 0.6rem; border-radius: 6px; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; }
+        .badge-group { background: rgba(59, 130, 246, 0.15); color: #60A5FA; border: 1px solid rgba(59, 130, 246, 0.3); }
+        .badge-ruben { background: rgba(225, 29, 72, 0.15); color: #FB7185; border: 1px solid rgba(225, 29, 72, 0.3); }
+        .badge-thomas { background: rgba(245, 158, 11, 0.15); color: #FBBF24; border: 1px solid rgba(245, 158, 11, 0.3); }
+        
+        .editable { padding: 12px; border-radius: 8px; transition: all 0.2s; min-height: 4em; }
+        .editable:focus { outline: 2px solid #3B82F6; background: rgba(15, 23, 42, 0.9); }
+        
+        input[type="checkbox"] {
+            accent-color: #3B82F6;
+            width: 1.25rem;
+            height: 1.25rem;
+            cursor: pointer;
+            background-color: #1E293B;
+            border: 1px solid #334155;
+            transition: all 0.2s ease;
+        }
+        input[type="checkbox"]:hover { transform: scale(1.1); }
+        .checked-text { text-decoration: line-through; opacity: 0.4; transition: all 0.3s ease; }
+    </style>
+</head>
+<body class="antialiased selection:bg-porto-blue selection:text-white">
+
+    <header class="relative w-full min-h-[60vh] flex items-center justify-center overflow-hidden border-b border-white/5 py-8 px-4">
+        <div class="absolute inset-0 z-0">
+            <img src="https://images.unsplash.com/photo-1555881400-74d7acaacd8b?q=100&w=2500&auto=format&fit=crop" alt="Porto Night" class="w-full h-full object-cover">
+            <div class="absolute inset-0 bg-gradient-to-b from-black/80 via-black/60 to-[#0B1121] z-10"></div>
+        </div>
+
+        <div class="relative z-20 text-center max-w-5xl mx-auto flex flex-col items-center reveal active w-full">
+            <h1 class="font-serif text-4xl sm:text-6xl md:text-8xl text-white mb-2 text-shadow italic">Porto <span class="text-porto-blue not-italic">&amp;</span> Gaia</h1>
+            <p class="text-sm sm:text-base md:text-xl text-gray-300 font-medium mb-6 text-shadow tracking-wide">
+                Ruben, Daniel, Thomas, Adam | 2026
+            </p>
+            
+            <div class="glass-panel bg-white/5 border border-white/10 backdrop-blur-md shadow-xl p-4 sm:p-6 rounded-2xl flex flex-col md:flex-row gap-6 text-sm mb-6 font-medium text-gray-200 w-full max-w-4xl text-left">
+                <div class="flex-1">
+                    <span class="text-porto-blue block text-xs uppercase tracking-widest font-bold mb-2"><i class="fa-solid fa-plane-departure mr-2"></i>Outbound (MAN to OPO)</span>
+                    <div class="text-base font-bold text-white mb-2">5 September 2026</div>
+                    
+                    <div class="flex justify-between items-center bg-black/40 rounded-xl p-3 mb-3 border border-white/5">
+                        <div>
+                            <div class="text-2xl font-light text-white">06:15</div>
+                            <div class="text-xs text-gray-400">Manchester (MAN)</div>
+                        </div>
+                        <div class="text-xs text-gray-500 font-bold px-2"><i class="fa-solid fa-arrow-right"></i></div>
+                        <div class="text-right">
+                            <div class="text-2xl font-light text-white">08:45</div>
+                            <div class="text-xs text-gray-400">Porto (OPO)</div>
+                        </div>
+                    </div>
+                    
+                    <ul class="text-xs text-gray-300 space-y-1">
+                        <li><i class="fa-solid fa-ticket text-porto-blue mr-2"></i><strong>Flight:</strong> Ryanair FR1175</li>
+                        <li><i class="fa-solid fa-suitcase text-porto-blue mr-2"></i><strong>Baggage:</strong> 1 small bag (40 x 30 x 20cm)</li>
+                    </ul>
+                </div>
+
+                <div class="hidden md:block w-px bg-white/10"></div>
+                <div class="md:hidden h-px w-full bg-white/10"></div>
+
+                <div class="flex-1">
+                    <span class="text-porto-wine block text-xs uppercase tracking-widest font-bold mb-2"><i class="fa-solid fa-plane-arrival mr-2"></i>Return (OPO to MAN)</span>
+                    <div class="text-base font-bold text-white mb-2">9 September 2026</div>
+                    
+                    <div class="flex justify-between items-center bg-black/40 rounded-xl p-3 mb-3 border border-white/5">
+                        <div>
+                            <div class="text-2xl font-light text-white">21:50</div>
+                            <div class="text-xs text-gray-400">Porto (OPO)</div>
+                        </div>
+                        <div class="text-xs text-gray-500 font-bold px-2"><i class="fa-solid fa-arrow-right"></i></div>
+                        <div class="text-right">
+                            <div class="text-2xl font-light text-white">00:15</div>
+                            <div class="text-xs text-gray-400">Manchester (MAN)</div>
+                        </div>
+                    </div>
+                    
+                    <ul class="text-xs text-gray-300 space-y-1">
+                        <li><i class="fa-solid fa-ticket text-porto-wine mr-2"></i><strong>Flight:</strong> EasyJet EZY2218</li>
+                        <li><i class="fa-solid fa-suitcase text-porto-wine mr-2"></i><strong>Baggage:</strong> 1 small bag (45 x 36 x 20cm)</li>
+                    </ul>
+                </div>
+            </div>
+
+            <a href="#dashboard" class="px-6 py-2.5 bg-porto-blue text-white font-bold rounded-full hover:bg-blue-600 transition-all shadow-lg text-xs sm:text-sm uppercase tracking-widest flex items-center gap-2">
+                View Itinerary <i class="fa-solid fa-arrow-down"></i>
+            </a>
+        </div>
+    </header>
+
+    <main id="dashboard" class="relative z-30 max-w-7xl mx-auto px-3 sm:px-6 py-8">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <div class="lg:col-span-2 space-y-6">
+                <div class="flex justify-between items-end mb-2 border-b-2 border-slate-800 pb-3">
+                    <h2 class="font-serif text-2xl sm:text-3xl text-porto-dark font-bold"><i class="fa-regular fa-calendar-days text-porto-blue mr-2"></i>Daily Programme</h2>
+                </div>
+                <div id="itinerary-container" class="space-y-6"></div>
+            </div>
+
+            <div class="space-y-6">
+                <div class="glass-panel p-5 rounded-2xl reveal border-t-4 border-t-porto-terra relative overflow-hidden">
+                    <h3 class="font-serif text-xl mb-3 text-white"><i class="fa-solid fa-house text-porto-terra mr-2"></i>Accommodation</h3>
+                    
+                    <a href="https://www.google.com/maps/search/?api=1&query=Rua+Fonte+da+Rija+239,+Vila+Nova+de+Gaia,+Porto" target="_blank" class="flex items-start gap-3 text-xs sm:text-sm text-slate-300 hover:text-white transition-colors bg-slate-800/80 border border-slate-700 p-3 rounded-xl w-full mb-3">
+                        <i class="fa-solid fa-map-location-dot mt-1 text-porto-terra text-base"></i>
+                        <span>Rua Fonte da Rija 239,<br>Vila Nova de Gaia, Porto 4430-384</span>
+                    </a>
+
+                    <div class="flex justify-between text-xs font-bold uppercase tracking-wide bg-slate-900 border border-slate-800 p-3 rounded-xl shadow-inner">
+                        <div><span class="text-porto-blue block mb-1"><i class="fa-solid fa-arrow-right-to-bracket mr-1"></i> Check-in</span>Sat 16:00</div>
+                        <div class="text-right"><span class="text-porto-terra block mb-1"><i class="fa-solid fa-arrow-right-from-bracket mr-1"></i> Checkout</span>Wed 10:00</div>
+                    </div>
+                </div>
+
+                <div class="glass-panel p-5 rounded-2xl reveal">
+                    <div class="flex justify-between items-center mb-3">
+                        <h3 class="font-serif text-xl text-white"><i class="fa-solid fa-pen-nib text-porto-blue mr-2"></i>Trip Notes</h3>
+                        <div class="space-x-2 flex">
+                            <button onclick="resetState()" class="text-xs bg-red-500/10 hover:bg-red-500/20 text-red-400 border border-red-500/20 px-2.5 py-1 rounded-lg transition font-semibold"><i class="fa-solid fa-rotate-right"></i> Reset</button>
+                            <button onclick="saveNotes()" id="save-btn" class="text-xs bg-porto-blue text-white hover:bg-blue-600 px-3 py-1 rounded-lg transition font-semibold"><i class="fa-solid fa-floppy-disk"></i> Save</button>
+                        </div>
+                    </div>
+                    <div id="user-notes" class="editable text-xs sm:text-sm text-slate-300 bg-slate-900/80 border border-slate-700 w-full h-32 focus:outline-none overflow-y-auto" contenteditable="true" placeholder="Add custom notes here..."></div>
+                </div>
+
+                <div class="glass-panel p-5 rounded-2xl reveal shadow-lg">
+                    <h3 class="font-serif text-xl mb-4 text-white"><i class="fa-solid fa-clipboard-check text-porto-blue mr-2"></i>The Hit List</h3>
+                    
+                    <div class="space-y-4">
+                        <div class="bg-slate-800/80 p-3.5 rounded-xl border border-slate-700/50">
+                            <h4 class="text-porto-terra font-bold text-xs tracking-widest uppercase mb-2 flex items-center gap-2">
+                                <i class="fa-solid fa-utensils"></i> Food &amp; Essentials
+                            </h4>
+                            <div id="list-food" class="space-y-1"></div>
+                        </div>
+                        
+                        <div class="bg-slate-800/80 p-3.5 rounded-xl border border-slate-700/50">
+                            <h4 class="text-porto-wine font-bold text-xs tracking-widest uppercase mb-2 flex items-center gap-2">
+                                <i class="fa-solid fa-cross"></i> Ruben Track (Catholic Visits)
+                            </h4>
+                            <div id="list-catholic" class="space-y-1"></div>
+                        </div>
+
+                        <div class="bg-slate-800/80 p-3.5 rounded-xl border border-slate-700/50">
+                            <h4 class="text-porto-blue font-bold text-xs tracking-widest uppercase mb-2 flex items-center gap-2">
+                                <i class="fa-solid fa-beer-mug-empty"></i> Pubs, Bars &amp; Wineries
+                            </h4>
+                            <div id="list-bars" class="space-y-1"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        const defaultData = {
+            days: [
+                {
+                    id: "day1",
+                    date: "5 September 2026 (Saturday)",
+                    title: "Arrival & City Centre",
+                    image: "https://images.unsplash.com/photo-1555881400-74d7acaacd8b?q=80&w=1000",
+                    events: [
+                        { time: "09:00", track: "group", desc: "Arrival at OPO. Secure train station lockers for baggage.", loc: "São Bento Station, Porto" },
+                        { time: "11:00", track: "split", 
+                          desc_thomas: "FC Porto vs Moreirense match at Estádio do Dragão.", loc_thomas: "Estádio do Dragão, Porto",
+                          desc_ruben: "Casa Museu Fernando de Castro tour.", loc_ruben: "Casa Museu Fernando de Castro, Porto",
+                          desc_group: "Daniel & Adam to select preferred activity or city stroll." },
+                        { time: "14:30", track: "group", desc: "Regroup post-match and museum tour. Lunch and city exploration.", loc: "Mercado do Bolhão, Porto" },
+                        { time: "16:00", track: "group", desc: "Check-in at the Villa.", loc: "Rua Fonte da Rija 239, Vila Nova de Gaia" },
+                        { time: "18:00", track: "split", desc_ruben: "Attend 18:00 Mass at Igreja de Santa Clara.", loc_ruben: "Igreja de Santa Clara, Porto" },
+                        { time: "20:00", track: "group", desc: "Evening drinks & Pubs.", loc: ["Capela Incomum", "Cervejaria Belga Gulden Draak", "Pipa Velha", "O Caçula Cervejaria"] }
+                    ]
+                },
+                {
+                    id: "day2",
+                    date: "6 September 2026 (Sunday)",
+                    title: "Cathedrals & Bar Crawl",
+                    image: "https://images.unsplash.com/photo-1513836279014-a89f7a76ae86?q=80&w=1000",
+                    events: [
+                        { time: "10:00", track: "split", 
+                          desc_ruben: "Attend morning mass (Porto Cathedral, 11:00) & visit Order of St. Francis Museum.", loc_ruben: ["Porto Cathedral", "Church of Saint Francis, Porto"],
+                          desc_group: "Explore town centre & historic sights." },
+                        { time: "12:30", track: "group", desc: "Group lunch in town.", loc: "Ribeira Square, Porto" },
+                        { time: "19:00", track: "group", desc: "Initiate Bar Crawl starting near Espaço 77.", loc: "Espaço 77, Porto" }
+                    ]
+                },
+                {
+                    id: "day3",
+                    date: "7 September 2026 (Monday)",
+                    title: "Beach & Port Wine Experience",
+                    image: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=1000",
+                    events: [
+                        { time: "10:00", track: "group", desc: "Beach recovery at Praia de Miramar. Visit Capela do Senhor da Pedra.", loc: ["Praia de Miramar, Vila Nova de Gaia", "Capela do Senhor da Pedra"] },
+                        { time: "17:15", track: "group", desc: "Port Winery Tour at Caves Ferreira.", loc: "Caves Ferreira, Vila Nova de Gaia" },
+                        { time: "20:00", track: "group", desc: "Super Bock Beer Experience.", loc: "Super Bock Casa da Cerveja, Porto" }
+                    ]
+                },
+                {
+                    id: "day4",
+                    date: "8 September 2026 (Tuesday)",
+                    title: "Museums & Markets",
+                    image: "https://images.unsplash.com/photo-1548625361-185e347475f4?q=80&w=1000",
+                    events: [
+                        { time: "10:00", track: "group", desc: "Visit Museu da Cidade do Porto.", loc: "Museu da Cidade do Porto" },
+                        { time: "12:30", track: "group", desc: "Gastronomy and lunch at Mercado do Bolhão.", loc: "Mercado do Bolhão" },
+                        { time: "20:00", track: "group", desc: "Evening wine tasting at Capela Incomum.", loc: "Capela Incomum, Porto" }
+                    ]
+                },
+                {
+                    id: "day5",
+                    date: "9 September 2026 (Wednesday)",
+                    title: "Final Sweeps & Departure",
+                    image: "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?q=80&w=1000",
+                    events: [
+                        { time: "10:00", track: "group", desc: "Checkout from the Villa.", loc: "Rua Fonte da Rija 239" },
+                        { time: "11:00", track: "group", desc: "Final sweeps, visit Casa Coração de Jesus catholic shop, souvenir buying.", loc: ["Casa Coração de Jesus, Porto", "Ribeira Square, Porto"] },
+                        { time: "21:50", track: "group", desc: "Flight EZY2218 departs OPO to MAN.", loc: "Francisco Sá Carneiro Airport (OPO)" }
+                    ]
+                }
+            ],
+            checklists: {
+                food: ["Francesinha", "Bifanas", "Ham Sandwiches (Pernil)", "Lidl Vila Nova de Gaia Centro"],
+                catholic: ["Casa Coração de Jesus", "Church of Saint Francis", "Porto Cathedral", "Igreja da Lapa", "Igreja de Santa Clara", "Church of Saint Ildefonso", "Capela de Santa Catarina", "Order of St. Francis Museum", "Capela do Senhor da Pedra"],
+                bars: ["Capela Incomum", "Cervejaria Belga Gulden Draak", "Pipa Velha", "O Caçula Cervejaria", "Espaço 77", "Super Bock Beer Experience", "Real Companhia Velha", "Graham's Port Lodge", "Caves Ferreira"]
+            },
+            notes: "Bring Andante travel card cash.<br>Confirm FC Porto match ticket for Tom."
+        };
+
+        let appState = {};
+
+        function initializeState() {
+            const saved = localStorage.getItem('porto_lads_state_v5');
+            if (saved) {
+                appState = JSON.parse(saved);
+            } else {
+                buildInitialState();
+            }
+        }
+
+        function buildInitialState() {
+            appState = JSON.parse(JSON.stringify(defaultData));
+            for (const category in appState.checklists) {
+                appState.checklists[category] = appState.checklists[category].map(text => ({
+                    id: 'chk_' + Math.random().toString(36).substr(2, 9),
+                    text: text,
+                    checked: false
+                }));
+            }
+        }
+
+        function saveState() {
+            appState.notes = document.getElementById('user-notes').innerHTML;
+            localStorage.setItem('porto_lads_state_v5', JSON.stringify(appState));
+            const btn = document.getElementById('save-btn');
+            if(btn) {
+                btn.innerHTML = '<i class="fa-solid fa-check"></i> Saved';
+                btn.classList.add('bg-green-600');
+                btn.classList.remove('bg-porto-blue');
+                setTimeout(() => {
+                    btn.innerHTML = '<i class="fa-solid fa-floppy-disk"></i> Save';
+                    btn.classList.remove('bg-green-600');
+                    btn.classList.add('bg-porto-blue');
+                }, 2000);
+            }
+        }
+
+        function resetState() {
+            if(confirm("Reset all saved notes and checklists to default?")) {
+                localStorage.removeItem('porto_lads_state_v5');
+                initializeState();
+                renderAll();
+            }
+        }
+
+        function generateMapBtn(query) {
+            if (!query) return '';
+            if (Array.isArray(query)) {
+                return `<div class="flex flex-wrap gap-1.5 mt-2 w-full justify-start md:justify-end">` + query.map(q => {
+                    const displayName = q.replace(', Porto', '').replace(', Vila Nova de Gaia', '');
+                    return `<a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(q)}" target="_blank" class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-slate-900 border border-slate-700 text-slate-400 hover:bg-porto-blue hover:text-white transition-all text-xs font-medium">
+                        <i class="fa-solid fa-location-dot"></i>
+                        <span>${displayName}</span>
+                    </a>`;
+                }).join('') + `</div>`;
+            }
+
+            const url = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`;
+            return `
+                <a href="${url}" target="_blank" class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-slate-900 border border-slate-700 text-slate-400 hover:bg-porto-blue hover:text-white transition-all text-xs font-medium mt-2 md:mt-0">
+                    <i class="fa-solid fa-location-dot"></i>
+                    <span>${query.replace(', Porto', '').replace(', Vila Nova de Gaia', '')}</span>
+                </a>
+            `;
+        }
+        
+        function renderItinerary() {
+            const container = document.getElementById('itinerary-container');
+            let html = '';
+
+            appState.days.forEach(day => {
+                let eventsHtml = '';
+                day.events.forEach(ev => {
+                    if(ev.track === 'split') {
+                        let splitHtml = '';
+                        
+                        if (ev.desc_group) {
+                            splitHtml += `
+                                <div class="bg-slate-800/80 p-3 rounded-xl border border-slate-700/50 mb-2">
+                                    <span class="badge badge-group mb-1"><i class="fa-solid fa-users mr-1"></i> Group / Others</span>
+                                    <p class="text-xs sm:text-sm text-slate-300 font-medium">${ev.desc_group}</p>
+                                    ${generateMapBtn(ev.loc_group)}
+                                </div>
+                            `;
+                        }
+
+                        if (ev.desc_thomas) {
+                            splitHtml += `
+                                <div class="bg-amber-950/30 p-3 rounded-xl border border-amber-900/40 mb-2">
+                                    <span class="badge badge-thomas mb-1"><i class="fa-solid fa-futbol mr-1"></i> Thomas</span>
+                                    <p class="text-xs sm:text-sm text-slate-300 font-medium">${ev.desc_thomas}</p>
+                                    ${generateMapBtn(ev.loc_thomas)}
+                                </div>
+                            `;
+                        }
+
+                        if (ev.desc_ruben) {
+                            splitHtml += `
+                                <div class="bg-rose-950/30 p-3 rounded-xl border border-rose-900/40 mb-2">
+                                    <span class="badge badge-ruben mb-1"><i class="fa-solid fa-cross mr-1"></i> Ruben</span>
+                                    <p class="text-xs sm:text-sm text-slate-300 font-medium">${ev.desc_ruben}</p>
+                                    ${generateMapBtn(ev.loc_ruben)}
+                                </div>
+                            `;
+                        }
+
+                        eventsHtml += `
+                            <div class="flex flex-col sm:flex-row gap-2 sm:gap-4 border-l-2 border-porto-blue/30 pl-3 py-2 relative">
+                                <div class="absolute -left-[9px] top-3 w-4 h-4 rounded-full bg-porto-blue border-4 border-[#0B1121]"></div>
+                                <div class="w-16 flex-shrink-0 text-porto-blue font-bold font-mono text-sm sm:text-base">${ev.time}</div>
+                                <div class="flex-grow">
+                                    ${splitHtml}
+                                </div>
+                            </div>
+                        `;
+                    } else {
+                        eventsHtml += `
+                            <div class="flex flex-col sm:flex-row gap-2 sm:gap-4 border-l-2 border-porto-blue/30 pl-3 py-2 relative">
+                                <div class="absolute -left-[9px] top-3 w-4 h-4 rounded-full bg-porto-blue border-4 border-[#0B1121]"></div>
+                                <div class="w-16 flex-shrink-0 text-porto-blue font-bold font-mono text-sm sm:text-base">${ev.time}</div>
+                                <div class="flex-grow bg-slate-800/80 p-3 rounded-xl border border-slate-700/50 flex flex-col md:flex-row justify-between items-start md:items-center">
+                                    <div>
+                                        <p class="text-xs sm:text-sm text-slate-300 font-medium">${ev.desc}</p>
+                                    </div>
+                                    ${generateMapBtn(ev.loc)}
+                                </div>
+                            </div>
+                        `;
+                    }
+                });
+
+                html += `
+                    <div class="bg-slate-900 rounded-2xl overflow-hidden reveal shadow-xl border border-slate-700/50">
+                        <div class="h-36 sm:h-44 w-full relative">
+                            <img src="${day.image}" class="w-full h-full object-cover" alt="${day.title}">
+                            <div class="absolute inset-0 bg-gradient-to-t from-[#0B1121] via-[#0B1121]/60 to-transparent"></div>
+                            <div class="absolute bottom-3 left-4 right-4">
+                                <div class="text-porto-blue text-xs font-bold tracking-widest uppercase mb-1"><i class="fa-regular fa-calendar"></i> ${day.date}</div>
+                                <h3 class="font-serif text-2xl sm:text-3xl text-white text-shadow">${day.title}</h3>
+                            </div>
+                        </div>
+                        <div class="p-4 sm:p-6 space-y-2 bg-[#0B1121]/90">
+                            ${eventsHtml}
+                        </div>
+                    </div>
+                `;
+            });
+            container.innerHTML = html;
+        }
+
+        function renderChecklists() {
+            ['food', 'catholic', 'bars'].forEach(category => {
+                const container = document.getElementById(`list-${category}`);
+                let html = '';
+                
+                appState.checklists[category].forEach((item) => {
+                    const checkedAttr = item.checked ? 'checked' : '';
+                    const textClass = item.checked ? 'checked-text text-slate-500' : 'text-slate-200 font-medium';
+                    const mapQuery = encodeURIComponent(item.text + " Porto Portugal");
+                    
+                    html += `
+                        <div class="flex items-center gap-2.5 p-1.5 hover:bg-slate-700/40 rounded-lg transition-colors">
+                            <input type="checkbox" id="${item.id}" ${checkedAttr} onchange="toggleCheckbox('${category}', '${item.id}')">
+                            <label for="${item.id}" class="flex-grow cursor-pointer text-xs sm:text-sm ${textClass} select-none" id="text-${item.id}">
+                                ${item.text}
+                            </label>
+                            <a href="https://www.google.com/maps/search/?api=1&query=${mapQuery}" target="_blank" class="text-slate-500 hover:text-porto-blue transition-colors p-1" title="Find on Map">
+                                <i class="fa-solid fa-map-location-dot"></i>
+                            </a>
+                        </div>
+                    `;
+                });
+
+                html += `
+                    <div class="mt-3 flex gap-2 pt-2 border-t border-slate-700/50">
+                        <input type="text" id="add-input-${category}" placeholder="Add new item..." class="w-full bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs text-slate-200 focus:outline-none focus:border-porto-blue">
+                        <button onclick="addMandate('${category}')" class="bg-slate-800 border border-slate-700 text-porto-blue hover:bg-porto-blue hover:text-white px-3 py-1.5 rounded-lg text-xs font-bold"><i class="fa-solid fa-plus"></i></button>
+                    </div>
+                `;
+                
+                container.innerHTML = html;
+            });
+        }
+
+        function toggleCheckbox(category, id) {
+            const item = appState.checklists[category].find(i => i.id === id);
+            if(item) {
+                item.checked = !item.checked;
+                saveState();
+                const label = document.getElementById(`text-${id}`);
+                if (item.checked) {
+                    label.classList.add('checked-text', 'text-slate-500');
+                    label.classList.remove('text-slate-200', 'font-medium');
+                } else {
+                    label.classList.remove('checked-text', 'text-slate-500');
+                    label.classList.add('text-slate-200', 'font-medium');
+                }
+            }
+        }
+
+        function addMandate(category) {
+            const input = document.getElementById(`add-input-${category}`);
+            const text = input.value.trim();
+            if(text) {
+                appState.checklists[category].push({
+                    id: 'chk_' + Math.random().toString(36).substr(2, 9),
+                    text: text,
+                    checked: false
+                });
+                input.value = '';
+                saveState();
+                renderChecklists();
+            }
+        }
+
+        function renderNotes() {
+            document.getElementById('user-notes').innerHTML = appState.notes || '';
+        }
+
+        function saveNotes() {
+            saveState();
+        }
+
+        function renderAll() {
+            renderItinerary();
+            renderChecklists();
+            renderNotes();
+            
+            setTimeout(() => {
+                const reveals = document.querySelectorAll('.reveal');
+                reveals.forEach(el => {
+                    const rect = el.getBoundingClientRect();
+                    if(rect.top < window.innerHeight) el.classList.add('active');
+                });
+            }, 100);
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            initializeState();
+            renderAll();
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                    }
+                });
+            }, { threshold: 0.1 });
+            
+            setTimeout(() => {
+                document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+            }, 300);
+            
+            document.getElementById('user-notes').addEventListener('blur', saveState);
+        });
+    </script>
+</body>
+</html>
